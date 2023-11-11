@@ -13,7 +13,8 @@ module.exports = {
                 blue: "#00CFFF",
                 lightBlue: "#D7E8F4",
                 lighterBlue: "#F4F8FC",
-                semiBlue: "#00CFFF"
+                semiBlue: "#00CFFF",
+                tagBlue: "#D1F2FA"
             },
         },
     },

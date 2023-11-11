@@ -1,33 +1,34 @@
 <template>
     <div class="fixed w-full z-20">
-        <nav class="flex bg-white justify-between items-center px-3 border border-bottom-secondary">
-            <div class="links">
-                <button class="btn" @click="toggleMenu">
-                    <span class="material-icons material-symbols-outlined">
+        <nav
+            class="flex bg-white justify-between items-center px-3 py-2 md:py-0 border border-bottom-secondary">
+            <div class="flex items-center">
+                <div class="links mr-2">
+                    <button class="bg-transparent md:hidden" @click="toggleMenu">
                         <Icons name="menu" />
-                    </span>
-                </button>
-            </div>
-            <div class="flex items-center rounded-lg border border-[#F0F1F1] bg-secondary py-1 px-4">
-                <img src="../assets/png/groupIcon.png" alt="group-icon" class="mr-2" />
-                GirlsCanCode
+                    </button>
+                </div>
+                <div class="flex items-center rounded-lg border border-[#F0F1F1] bg-secondary py-1 px-4">
+                    <img src="../assets/png/groupIcon.png" alt="group-icon" class="mr-2" />
+                    GirlsCanCode
+                </div>
             </div>
             <div class="flex items-center">
-                <Icons name="lang" />
-                <div class="flex items-center ml-2">
+                <Icons name="lang" class="hidden md:block" />
+                <div class="md:flex md:items-center ml-2 hidden">
                     EN
                     <span class="material-symbols-outlined">
                         arrow_drop_down
                     </span>
                 </div>
-                <Icons name="notification" class="px-3 border-end" />
-                <img src="../assets/png/user.png" alt="user" class="mx-2" />
+                <Icons name="notification" class="pr-1 md:px-3 border-end" />
                 <div class="relative inline-block text-left">
                     <button type="button"
-                        class="flex items-center border-0 w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm"
+                        class="flex items-center border-0 w-full justify-center gap-x-1.5 rounded-md bg-white pl-1 md:px-3 py-2 text-sm"
                         id="menu-button" aria-expanded="true" aria-haspopup="false" @click="showDropdown">
-                        Beth Amarachi
-                        <span class="material-symbols-outlined">
+                        <img src="../assets/png/user.png" alt="user" class="mx-2" />
+                        <p class="hidden md:block">Beth Amarachi</p>
+                        <span class="material-symbols-outlined hidden md:block">
                             arrow_drop_down
                         </span>
                     </button>
@@ -60,8 +61,7 @@ import Icons from './Icons.vue';
 
 export default {
     components: { Icons },
-    setup() {
-        const emit = defineEmits(['toggle'])
+    setup(props, { emit }) {
 
         const dropdown = ref(false)
 
@@ -76,7 +76,7 @@ export default {
         return {
             toggleMenu,
             dropdown,
-            showDropdown
+            showDropdown,
         }
     }
 }
