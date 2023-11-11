@@ -1,0 +1,43 @@
+
+$primary: #0045F6;
+$secondary: #F9F7F5;
+$primary2: #24983f;
+$light-danger: #be202e17;
+$blue-25: #F4F8FC;
+$blue-75: #D7E8F4;
+$blue: #00CFFF;
+$blue-100: #D1F2FA;
+$white: #fff;
+$black: #000;
+$theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "primary2": $primary2,
+    "light-danger": $light-danger,
+    "blue-25": $blue-25,
+    "blue-75": $blue-75,
+    "blue": $blue,
+    "blue-100": $blue-100,
+    "white": $white,
+    "black": $black
+);
+
+
+$dark: #11461d;
+$secondary2: #e9f9ef;
+$light-gray: #f9fafb;
+$gray: #344054;
+$grey: #98a2b3;
+$theme-colors: map-merge($theme-colors, (
+    "gray": #344054,
+    "secondary": #eaf6ec,
+    "secondary2": #e9f9ef,
+    "dark": #11461d,
+    "light-gray": #f9fafb,
+    "grey": #98a2b3,
+));
+
+:root {
+    --header-height: 72px;
+    --sidenav-width: 256px;
+}
