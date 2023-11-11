@@ -50,7 +50,8 @@
                     </div>
                 </article>
                 <article class="flex flex-col-reverse md:flex-row justify-between items-start mt-10 gap-4 w-full">
-                    <div v-if="editPersonalInfo" class="bg-[#F7F8F8] rounded-2xl py-4 px-3 w-[100%] md:w-[70%] flex-initial">
+                    <div v-if="editPersonalInfo"
+                        class="bg-[#F7F8F8] rounded-2xl py-4 px-3 w-[100%] md:w-[70%] flex-initial">
                         <div class="flex items-center justify-between py-4 border-b">
                             <div class="text-xl md:text-2xl text-[#384747]">Personal Info</div>
                             <div class="flex items-center">
@@ -367,8 +368,8 @@
                             </button>
                         </div>
                         <div v-for="(item, index) in workExperience" :key="index"
-                            class="border border-[#E4E7E7] rounded-xl my-5 p-5"
-                            :class="item.selected && 'bg-lighterBlue border-0'">
+                            class="border border-[#E4E7E7] rounded-xl my-5 p-5 cursor-pointer"
+                            :class="item.selected && 'bg-lighterBlue border-0'" @click="selectExperience(index)">
                             <ol class="relative border-s border-[#E4E7E7]" :class="item.selected && 'border-lightBlue'">
                                 <li class="mb-10 ms-4">
                                     <div class="absolute w-3 h-3 rounded-full mt-0 -start-1.5 border border-white"
@@ -389,10 +390,10 @@
                                             </div>
                                         </div>
                                         <div v-if="item.selected" class="flex items-center">
-                                            <button class="bg-white rounded-full p-2 mr-2">
+                                            <button class="bg-white rounded-full p-2 mr-2" @click="processEdit(index)">
                                                 <Icons name="pen" class="fill-blue w-[24px] h-[24px]" />
                                             </button>
-                                            <button class="bg-white rounded-full p-2">
+                                            <button class="bg-white rounded-full p-2" @click="deleteExperience(index)">
                                                 <Icons name="delete" />
                                             </button>
                                         </div>
@@ -411,60 +412,99 @@
         <!-- MODALS -->
 
         <!-- Work Experience Modal -->
-        <modal v-if="showModal" :title="'Work Experience'" :buttonLabel="'Save work experience'"
-            @onClose="showModal = false" @onSave="showModal = false" @onContinue="showModal = false">
+        <modal v-if="showModal" multiple="true" :title="'Work Experience'" :buttonLabel="'Save work experience'"
+            @onClose="showModal = false"
+            @onSave="newExperience.isEdit ? editWorkExperience(newExperience.index, false) : saveWorkExperience(false)"
+            @onContinue="newExperience.isEdit ? editWorkExperience(newExperience.index, true) : saveWorkExperience(true)">
             <form class="w-[80%] my-5 mx-auto">
-                                <div class="flex flex-col">
-                                    <label for="full_name" class="font-medium text-sm mb-1">Full Name</label>
-                                    <input type="text" v-model="personalInfo.full_name" placeholder="Full Name"
-                                        class="form-input border-[#E4E7E7] rounded-xl px-4 py-3 w-full">
-                                </div>
-                                <div class="flex flex-col mt-5">
-                                    <label for="email" class="font-medium text-sm mb-1">Email</label>
-                                    <input type="email" v-model="personalInfo.email" placeholder="First Name"
-                                        class="form-input border-[#E4E7E7] rounded-xl px-4 py-3 w-full">
-                                </div>
-                                <div class="flex flex-col mt-5">
-                                    <label for="gender" class="font-medium text-sm mb-1">Gender</label>
-                                    <select v-model="personalInfo.gender"
-                                        class="form-select border-[#E4E7E7] rounded-xl px-4 py-3 w-full">
-                                        <option hidden>Select Gender</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Male">Male</option>
-                                    </select>
-                                </div>
-                                <div class="flex flex-col mt-5">
-                                    <label for="country" class="font-medium text-sm mb-1">Country</label>
-                                    <select v-model="personalInfo.country"
-                                        class="form-select border-[#E4E7E7] rounded-xl px-4 py-3 w-full">
-                                        <option hidden>Select Country</option>
-                                        <option value="Kenya">Kenya</option>
-                                        <option value="Nigeria">Nigeria</option>
-                                    </select>
-                                </div>
-                                <div class="flex flex-col mt-5">
-                                    <label for="email" class="font-medium text-sm mb-1">Phone Number</label>
-                                    <div class="relative mt-2 rounded-md shadow-sm">
-                                        <div class="absolute inset-y-0 left-0 flex items-center mr-4">
-                                            <select v-model="personalInfo.countryCode" id="countrycode" name="countrycode"
-                                                class="h-full rounded-xl border-0 bg-transparent py-3 pr-7 text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm">
-                                                <option>+234</option>
-                                                <option>+254</option>
-                                                <option>+1</option>
-                                            </select>
-                                        </div>
-                                        <input v-model="personalInfo.phone" type="text" name="phone" id="phone"
-                                            class="block w-full rounded-xl border-0 py-3 pl-20 pr-7 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            placeholder="090...">
-                                    </div>
-                                </div>
-                                <div class="flex flex-col mt-5">
-                                    <label for="about" class="font-medium text-sm mb-1">About me</label>
-                                    <textarea v-model="personalInfo.about" name="about" id="about"
-                                        class="py-3 px-4 rounded-xl border-[#E4E7E7] form-textarea w-full" cols="30"
-                                        rows="5"></textarea>
-                                </div>
-                            </form>
+                <div class="flex flex-col">
+                    <label for="title" class="font-medium text-sm mb-1">Job Title</label>
+                    <input type="text" v-model="newExperience.title" placeholder="DevOps Engineer"
+                        class="form-input border-[#E4E7E7] rounded-xl px-4 py-3 w-full">
+                </div>
+                <div class="flex flex-col mt-5">
+                    <label for="company" class="font-medium text-sm mb-1">Company Name</label>
+                    <input type="text" v-model="newExperience.company" placeholder="Google"
+                        class="form-input border-[#E4E7E7] rounded-xl px-4 py-3 w-full">
+                </div>
+                <div class="flex flex-col mt-5">
+                    <label for="website" class="font-medium text-sm mb-1">Company Website</label>
+                    <input type="text" v-model="newExperience.website" placeholder="https://google.com"
+                        class="form-input border-[#E4E7E7] rounded-xl px-4 py-3 w-full">
+                </div>
+                <div class="flex flex-col mt-5">
+                    <label class="font-medium text-sm mb-1">Location</label>
+                    <div class="flex items-start justify-between w-full gap-4">
+                        <div class="flex w-[50%] flex-col mt-5">
+                            <select v-model="newExperience.country"
+                                class="form-select border-[#E4E7E7] rounded-xl px-4 py-3 w-full">
+                                <option hidden>Select Country</option>
+                                <option value="Kenya">Kenya</option>
+                                <option value="Nigeria">Nigeria</option>
+                            </select>
+                        </div>
+                        <div class="flex- w-[50%] flex-col mt-5">
+                            <select v-model="newExperience.state"
+                                class="form-select border-[#E4E7E7] rounded-xl px-4 py-3 w-full">
+                                <option hidden>Select State</option>
+                                <option value="Abuja">Abuja</option>
+                                <option value="Lagos">Lagos</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-between items-start gap-2">
+                    <div class="flex flex-col mt-5">
+                        <label class="font-medium text-sm mb-1">Start date</label>
+                        <div class="flex items-start w-[50%] w-full gap-2">
+                            <div class="flex w-[50%] flex-col mt-5">
+                                <select v-model="newExperience.start_month"
+                                    class="form-select border-[#E4E7E7] rounded-xl px-4 py-3 w-full">
+                                    <option hidden>Select Month</option>
+                                    <option value="January">January</option>
+                                    <option value="February">February</option>
+                                </select>
+                            </div>
+                            <div class="flex- w-[50%] flex-col mt-5">
+                                <select v-model="newExperience.start_year"
+                                    class="form-select border-[#E4E7E7] rounded-xl px-4 py-3 w-[100%]">
+                                    <option hidden>Select Year</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2022">2022</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col mt-5">
+                        <label class="font-medium text-sm mb-1">End date</label>
+                        <div class="flex items-start w-[50%] w-full gap-2">
+                            <div class="flex w-[50%] flex-col mt-5">
+                                <select v-model="newExperience.end_month"
+                                    class="form-select border-[#E4E7E7] rounded-xl px-4 py-3 w-full">
+                                    <option hidden>Select Month</option>
+                                    <option value="Jan">January</option>
+                                    <option value="Feb">February</option>
+                                </select>
+                            </div>
+                            <div class="flex w-[50%] flex-col mt-5">
+                                <select v-model="newExperience.end_year"
+                                    class="form-select border-[#E4E7E7] rounded-xl px-4 py-3 w-full">
+                                    <option hidden>Select Year</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2022">2022</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col mt-5">
+                    <label for="accomplishment" class="font-medium text-sm mb-1">Accomplishments</label>
+                    <p class="text-sm my-1">Include accomplishments and responsibilities for this role. Start each statement
+                        with a solid action verb; also include specific, technical words with sample data.</p>
+                    <textarea v-model="newExperience.accomplishment" name="accomplishment" id="about"
+                        class="py-3 px-4 rounded-xl border-[#E4E7E7] form-textarea w-full" cols="30" rows="5"></textarea>
+                </div>
+            </form>
         </modal>
     </div>
 </template>
@@ -512,6 +552,28 @@ export default {
             prefered_salary: "13,500",
             secondary_roles: ["Data Engineer", "Cybersecurity"],
             notice_period: "3 weeks"
+        })
+
+        const selectExperience = (index) => {
+            for (let item in workExperience) {
+                if (item != index) {
+                    workExperience[item].selected = false
+                }
+                workExperience[index].selected = true
+            }
+        }
+
+        const newExperience = reactive({
+            title: "",
+            company: "",
+            state: "",
+            country: "",
+            start_month: "",
+            start_year: "",
+            end_month: "",
+            end_year: "",
+            currently_there: false,
+            accomplishment: "",
         })
 
         const workExperience = reactive([
@@ -562,6 +624,65 @@ export default {
             workInfo.prefered_work.splice(index, 1)
         }
 
+        const saveWorkExperience = (add) => {
+            workExperience.push({ ...newExperience, selected: false })
+            newExperience.title = "",
+                newExperience.company = "",
+                newExperience.website = ""
+            newExperience.state = "",
+                newExperience.country = "",
+                newExperience.start_month = "",
+                newExperience.start_year = "",
+                newExperience.end_month = "",
+                newExperience.end_year = "",
+                newExperience.currently_there = false,
+                newExperience.accomplishment = ""
+
+            if (!add) {
+                showModal.value = false
+            }
+        }
+
+        const processEdit = (index) => {
+            newExperience.title = workExperience[index].title
+            newExperience.company = workExperience[index].company,
+                newExperience.website = workExperience[index].website
+            newExperience.state = workExperience[index].state,
+                newExperience.country = workExperience[index].country,
+                newExperience.start_month = workExperience[index].start_month,
+                newExperience.start_year = workExperience[index].start_year,
+                newExperience.end_month = workExperience[index].end_month,
+                newExperience.end_year = workExperience[index].end_year,
+                newExperience.currently_there = workExperience[index].currently_there,
+                newExperience.accomplishment = workExperience[index].accomplishment,
+                newExperience.isEdit = true
+            newExperience.index = index
+            showModal.value = true
+        }
+        const editWorkExperience = (index, add) => {
+            workExperience[index] = { ...newExperience, selected: false }
+            newExperience.title = "",
+                newExperience.company = "",
+                newExperience.website = ""
+            newExperience.state = "",
+                newExperience.country = "",
+                newExperience.start_month = "",
+                newExperience.start_year = "",
+                newExperience.end_month = "",
+                newExperience.end_year = "",
+                newExperience.currently_there = false,
+                newExperience.accomplishment = ""
+
+            if (!add) {
+                showModal.value = false
+            }
+        }
+
+        const deleteExperience = (index) => {
+            workExperience.splice(index, 1)
+        }
+
+
         return {
             isExpanded,
             toggleMenu,
@@ -572,7 +693,13 @@ export default {
             workExperience,
             removePreferedWork,
             removeSecondaryRoles,
-            showModal
+            showModal,
+            newExperience,
+            saveWorkExperience,
+            selectExperience,
+            processEdit,
+            editWorkExperience,
+            deleteExperience
         }
     }
 };
@@ -611,4 +738,5 @@ export default {
             padding-left: 3rem;
         }
     }
-}</style>
+}
+</style>
