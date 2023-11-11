@@ -374,12 +374,12 @@
                                     <div class="absolute w-3 h-3 rounded-full mt-0 -start-1.5 border border-white"
                                         :class="item.selected ? 'bg-lightBlue' : 'bg-[#E4E7E7]'">
                                     </div>
-                                    <div class="flex justify-between items-center">
+                                    <div class="flex justify-between items-start md:items-center">
                                         <div>
                                             <h3 class="font-semibold text-xl">{{ item.title }}</h3>
-                                            <div class="flex flex-wrap items-center text-lg my-2">
-                                                <p class="underline pr-2 border-r">{{ item.company }}</p>
-                                                <p class="text-gray-500 px-2 border-r"
+                                            <div class="flex flex-wrap items-center text-base md:text-lg my-2">
+                                                <p class="underline pr-2 md:border-r">{{ item.company }}</p>
+                                                <p class="text-gray-500 px-2 md:border-r"
                                                     :class="item.selected ? 'text-gray-900' : 'text-gray-500'">{{
                                                         `${item.state}, ${item.country}` }}</p>
                                                 <time class="text-gray-500 px-2"

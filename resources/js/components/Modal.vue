@@ -1,25 +1,25 @@
 <template>
-    <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="relative z-[999999]" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div class="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
                 <div
-                    class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-20 sm:w-full sm:max-w-2xl sm:max-h-[80vh]">
+                    class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-20 sm:w-full sm:max-w-2xl sm:max-h-full">
                     <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start w-full">
                             <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full overflow-y-auto h-full">
-                                <div class="fixed flex justify-between py-2 mb-4 border-b w-full">
+                                <div class="flex justify-between py-2 mb-4 border-b w-full">
                                     <h3 class="text-2xl font-semibold leading-6 text-gray-900" id="modal-title">{{ title }}
                                     </h3>
                                 </div>
-                                <div class="overflow-y-scroll h-[100vh]">
+                                <div class="">
                                     <slot></slot>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white fixed w-full p-4 flex justify-between border-t sm:px-6">
+                    <div class="bg-white w-full p-4 flex justify-between border-t sm:px-6">
                         <button type="button" class="bg-secondary text-gray-900 px-3 py-2 rounded-lg"
                             @click="closeModal">Cancel</button>
                         <div>
