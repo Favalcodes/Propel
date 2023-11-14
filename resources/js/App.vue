@@ -453,7 +453,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex justify-between items-start gap-2">
+                <div class="flex flex-wrap md:flex-nowrap justify-between items-start gap-2">
                     <div class="flex flex-col mt-5">
                         <label class="font-medium text-sm mb-1">Start date</label>
                         <div class="flex items-start w-[50%] w-full gap-2">

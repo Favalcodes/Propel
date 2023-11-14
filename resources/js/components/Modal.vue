@@ -19,12 +19,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white w-full p-4 flex justify-between border-t sm:px-6">
-                        <button type="button" class="bg-secondary text-gray-900 px-3 py-2 rounded-lg"
+                    <div class="bg-white w-full mdp-4 flex justify-between border-t p-2">
+                        <button type="button" class="bg-secondary text-gray-900 px-3 py-2 rounded-lg mr-4"
                             @click="closeModal">Cancel</button>
-                        <div>
+                        <div class="flex flex-nowrap items-center">
                             <button v-if="multiple" type="button"
-                                class="border bg-transparent border-primary px-3 py-2 rounded-lg text-primary mr-2"
+                                class="border bg-transparent border-primary px-3 py-2 rounded-lg text-primary md:mr-2"
                                 @click="addNew">Save and add another</button>
                             <button type="button" class="bg-primary px-3 py-2 rounded-lg text-white" @click="saveContent">{{
                                 buttonLabel }}</button>
